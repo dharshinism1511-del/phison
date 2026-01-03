@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Farm Management Portal</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+body{
+    background:#e8ebeaea;
+    background-image:url(/back.jpeg);
+    background-size:cover;
+}
+header{
+    background:#3ab067fc;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    padding:15px;
+}
+.ONE{
+    text-align:center;
+    font-size:40px;
+    margin-top:20px;
+}
+.dashboard{
+    padding:30px;
+}
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+.card{
+    background:linear-gradient(to top,rgb(111, 171, 192),rgb(81,154,81));
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+    box-shadow:10px 20px 20px rgba(0,0,0,0.1);
+}
+.form-section{
+    padding:30px;
+    background:linear-gradient(to bottom,rgb(104, 166, 187),rgb(81,156,81));
+    margin:30px;
+    border-radius:10px;
+}
+form{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+input,select,button{
+    padding:10px;
+    font-size:16px;
+}
+button{
+    background:#f7f8f7;
+    color:rgb(24, 12, 12);
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+footer{
+    text-align:center;
+    padding:15px;
+    background:#3da73d;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>PHISON</h1>
+    <img src="/logo.jpeg" height="70">
+</header>
+
+<section class="dashboard">
+<h2 class="ONE">Farm Dashboard</h2>
+
+<div class="cards">
+
+<!-- Biosecurity -->
+<div class="card">
+<h3>Biosecurity Measures</h3>
+<select onchange="showCropAdvice(this.value)">
+<option value="">Select Crop</option>
+<option>Rice</option>
+<option>Millets</option>
+<option>Maize</option>
+<option>Sugarcane</option>
+<option>Cotton</option>
+<option>Groundnut</option>
+</select>
+<p id="crop-advice"></p>
+</div>
+
+<!-- Weather -->
+<div class="card">
+<h3>🌦 Weather</h3>
+<select onchange="showClimateAdvice(this.value)">
+<option value="">Select Climate</option>
+<option value="heat">Extreme Heat</option>
+<option value="flood">Flood</option>
+<option value="drought">Drought</option>
+</select>
+<p id="climate-advice"></p>
+</div>
+
+<!-- Food -->
+<div class="card">
+<h3>Food Cycle</h3>
+<select onchange="showFoodAdvice(this.value)">
+<option value="">Select Animal</option>
+<option>Pig</option>
+<option>Cow</option>
+<option>Goat</option>
+<option>Hen</option>
+<option>Buffalow</option>
+</select>
+<p id="food-advice"></p>
+</div>
+
+<!-- Veterinary Navigation -->
+<div class="card">
+<h3>🐾 Veterinary Center</h3>
+<p>Navigate to nearest vet hospital</p>
+<button onclick="navigateToVet()">Navigate</button>
+</div>
+
+</div>
+</section>
+
+<!-- Crop Form -->
+<section class="form-section">
+<h2>Add Crop Record</h2>
+<form id="cropForm">
+<input id="personName" placeholder="Person Name" required>
+<input id="personAddress" placeholder="Address" required>
+<input id="cropName" placeholder="Crop Name" required>
+<input type="date" id="plantDate" required>
+<input type="number" id="area" placeholder="Area (acres)" required>
+<button type="submit">Add</button>
+</form>
+</section>
+
+<!-- Vaccination Form -->
+<section class="form-section">
+<h2>Vaccination Record</h2>
+<form id="vaccinationForm">
+<input id="personNameV" placeholder="Person Name" required>
+<input id="personAddressV" placeholder="Address" required>
+<input id="breedName" placeholder="Breed Name" required>
+<input type="date" id="vaccinationDate" required>
+<input type="number" id="breedCount" placeholder="No. of Animals" required>
+<button type="submit">Add</button>
+</form>
+</section>
+
+<footer>
+<p>© 2025 Digital Farm Management Portal</p>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+const whatsappNumber = "919876543210";
+
+const cropForm = document.getElementById("cropForm");
+const vaccinationForm = document.getElementById("vaccinationForm");
+
+const cropAdviceEl = document.getElementById("crop-advice");
+const climateAdviceEl = document.getElementById("climate-advice");
+const foodAdviceEl = document.getElementById("food-advice");
+
+/* Crop Form */
+cropForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    const msg = `🌾 Crop Record
+Name: ${personName.value}
+Address: ${personAddress.value}
+Crop: ${cropName.value}
+Date: ${plantDate.value}
+Area: ${area.value} acres`;
+    window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`);
+    cropForm.reset();
+});
+
+/* Vaccination Form */
+vaccinationForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    const msg = `💉 Vaccination Record
+Name: ${personNameV.value}
+Address: ${personAddressV.value}
+Breed: ${breedName.value}
+Date: ${vaccinationDate.value}
+Animals: ${breedCount.value}`;
+    window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`);
+    vaccinationForm.reset();
+});
+
+/* Biosecurity */
+const bio = {
+    Rice:"Use certified seeds.",
+    Millets:"Remove infected plants.",
+    Maize:"Monitor fall armyworm.",
+    Sugarcane:"Use disease-free setts.",
+    Cotton:"Control pink bollworm.",
+    Groundnut:"Control aphids."
+};
+window.showCropAdvice = crop => cropAdviceEl.textContent = bio[crop] || "";
+
+/* Climate */
+const climate = {
+    heat:"Provide shade & water.",
+    flood:"Ensure drainage.",
+    drought:"Conserve water."
+};
+window.showClimateAdvice = c => climateAdviceEl.textContent = climate[c] || "";
+
+/* Food */
+const food = {
+    Pig:"Corn & soybean meal",
+    Cow:"Grass & silage",
+    Goat:"Leaves & shrubs",
+    Hen:"Grains & protein feed",
+    Buffalow:"Green fodder"
+};
+window.showFoodAdvice = a => foodAdviceEl.textContent = food[a] || "";
+
+/* ✅ Veterinary Navigation */
+window.navigateToVet = function(){
+    if(!navigator.geolocation){
+        alert("Geolocation not supported");
+        return;
+    }
+    navigator.geolocation.getCurrentPosition(
+        pos=>{
+            const {latitude, longitude} = pos.coords;
+            window.open(
+              `https://www.google.com/maps/dir/?api=1&origin=${latitude},${longitude}&destination=veterinary+hospital`,
+              "_blank"
+            );
+        },
+        ()=>alert("Please allow location access")
+    );
+};
+
+});
+</script>
+
+</body>
+</html>
